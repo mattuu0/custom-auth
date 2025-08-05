@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="./login.html">ログイン</a>
+    <button id="logout" onclick="Logout()">ログアウト</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@teamhanko/hanko-frontend-sdk/dist/sdk.umd.js"></script>
+
+    <script>
+        const hanko = new hankoFrontendSdk.Hanko("/auth")
+
+        hanko.onUserLoggedOut(() => {
+            // You can redirect the user to a login page or show the `<hanko-auth>` element.
+            console.info("User logged out");
+        })
+
+        hanko.onUserDeleted(() => {
+            // You can redirect the user to a login page or show the `<hanko-auth>` element.
+            console.info("User has been deleted");
+        })
+
+        async function Init() {
+            try {
+                const user = await hanko.getUser();
+                console.log("User profile:", user);
+            } catch (error) {
+                console.error("Failed to fetch user profile:", error);
+                // Handle UnauthorizedError or TechnicalError
+            }
+        }
+
+        Init();
+
+        async function Logout() {
+            try {
+                await hanko.logout();
+                console.log("User logged out");
+            } catch (error) {
+                console.error("Failed to fetch user logout:", error);
+                // Handle TechnicalError
+            }
+        }
+    </script>
+</body>
+</html>

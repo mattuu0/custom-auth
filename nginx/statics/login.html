@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
+</head>
+
+<body>
+    <h1>ログイン</h1>
+
+    <hanko-auth id="authComponent"></hanko-auth>
+
+    <script type="module">
+        import { register } from "https://cdn.jsdelivr.net/npm/@teamhanko/hanko-elements/dist/elements.js";
+
+        const { hanko } = await register("/auth");
+
+        const authComponent = document.getElementById("authComponent");
+        authComponent.addEventListener("onSessionCreated", () => {
+            // redirect to a different page
+            window.location.href = "/statics/index.html";
+        });
+    </script>
+</body>
+
+</html>

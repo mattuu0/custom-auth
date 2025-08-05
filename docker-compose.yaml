@@ -1,0 +1,38 @@
+services:
+    # データベースコンテナ
+    mysql:
+        image: mysql
+        restart: always
+        hostname: db
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: hanko
+            MYSQL_PASSWORD: hanko
+            MYSQL_DATABASE: hanko
+        volumes:
+          - ./database/data:/var/lib/mysql
+    
+    # nginx 公開用
+    nginx:
+        hostname: nginx
+        image: nginx:latest
+        ports:
+            - 8922:8443
+        restart: always
+        tty: true
+        volumes:
+            - ./nginx/configs:/etc/nginx/conf.d/
+            - ./nginx/keys:/etc/nginx/keys
+            - ./nginx/statics:/etc/nginx/static/statics
+
+    # アプリ
+    app:
+        hostname: app
+        build:
+            context: ./containers/app
+            target: Develop
+        tty: true
+        volumes:
+            - ./containers/app/src:/root/src
+        restart: always
+

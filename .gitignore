@@ -1,0 +1,5 @@
+database/data/
+nginx/keys/
+openssl/jwtKeys/
+hanko/config.yaml
+containers/app/src/tmp/
