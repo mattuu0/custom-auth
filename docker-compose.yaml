@@ -36,3 +36,13 @@ services:
             - ./containers/app/src:/root/src
         restart: always
 
+    # 認証
+    auth:
+        hostname: auth
+        build:
+            context: ./auth
+            target: Develop
+        tty: true
+        volumes:
+            - ./auth/src:/root/src
+        restart: always

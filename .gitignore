@@ -3,3 +3,4 @@ nginx/keys/
 openssl/jwtKeys/
 hanko/config.yaml
 containers/app/src/tmp/
+/auth/src/tmp/

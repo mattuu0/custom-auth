@@ -1,0 +1,32 @@
+# デバッグ用
+FROM golang:1.24.5-bullseye as Develop
+
+# apt 更新
+# RUN apt update
+# RUN apt install -y git wget curl
+
+# 作業ディレクトリを設定
+WORKDIR /root/src
+
+# AIR のインストール
+RUN go install github.com/air-verse/air@latest
+
+CMD ["air", "-c", ".air.toml"]
+
+# リリース用
+FROM golang:1.24.5-bullseye as Release
+
+# 作業ディレクトリを設定
+WORKDIR /root/auth
+
+# プロジェクトをコピー
+COPY ./src /root/auth
+
+# プロジェクトをビルド
+RUN go mod download
+RUN CGO_ENABLED=0 go build -x -o auth_server .
+
+# Now copy it into our base image.
+FROM gcr.io/distroless/static-debian12
+COPY --from=Release /root/auth/auth_server /
+CMD ["/auth_server"]
